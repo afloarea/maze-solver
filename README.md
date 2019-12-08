@@ -11,9 +11,9 @@ It is a Dijkstra implementation.
 
 **Dependencies**
 
-- OpenImaj
-- JUnit
-- Mockito
+- [OpenImaj](http://openimaj.org/) ([BSD](http://openimaj.org/license.html))
+- [JUnit](https://junit.org/junit5/) ([Eclipse Public License](https://github.com/junit-team/junit5/blob/master/LICENSE.md))
+- [Mockito](https://site.mockito.org/) ([MIT](https://github.com/mockito/mockito/wiki/License))
 
 __IMPORTANT NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
 
