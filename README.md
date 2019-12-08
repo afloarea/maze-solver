@@ -2,9 +2,14 @@
 
 Java implementation of the Solving Maze algorithm presented by Computerphile.
 
-This project is inspired by the [maze solving algorithm from Computerphile](https://www.youtube.com/watch?v=rop0W4QDOUI). It is a Dijkstra implementation.
+The basic idea is that there is a free tile at the top, on the first row, 
+which is the starting point and there is also one at the bottom, which is the destination, 
+and you have to reach the destination from the starting point.
 
-**Dependecies**
+This project is inspired by the [maze solving algorithm from Computerphile](https://www.youtube.com/watch?v=rop0W4QDOUI).
+It is a Dijkstra implementation.
+
+**Dependencies**
 
 - OpenImaj
 - JUnit
@@ -30,5 +35,5 @@ Some sample data:
 
 You can try your luck with the bigger mazes but be warned as it can eat a lot of memory and CPU.
 
-Here is an example of a bigger one (it is a bit hard to show since it is 4k x 4k pixel):
+Here is an example of a bigger one (it is a bit hard to show since it is 4k x 4k pixels):
 ![monster](docs/images/perfect4k_solved.png)
