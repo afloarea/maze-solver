@@ -12,7 +12,6 @@ This project is inspired by the [maze solving algorithm from Computerphile](http
 
 __IMPORTANT NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
 
-To run the application, use the maze-solver-uber-1.0.jar file from the _executable_ directory.
 Check out the mazes folder. The output file will be in the same folder as the input file.
 
 Some sample data:
