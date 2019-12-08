@@ -1,4 +1,4 @@
-maze-solver/.gradle
-maze-solver/.idea
-maze-solver/out
-maze-solver/build
+.gradle
+.idea
+out
+build
