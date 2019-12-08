@@ -19,17 +19,17 @@ Some sample data:
 
 - tiny.png
 
-![original](images/tiny_original.png) ![solved](images/tiny_solved.png)
+![original](docs/images/tiny_original.png) ![solved](docs/images/tiny_solved.png)
 
 - small.png
 
-![original](images/small_original.png) ![solved](images/small_solved.png)
+![original](docs/images/small_original.png) ![solved](docs/images/small_solved.png)
 
 - normal.png
 
-![original](images/normal_original.png) ![solved](images/normal_solved.png)
+![original](docs/images/normal_original.png) ![solved](docs/images/normal_solved.png)
 
 You can try your luck with the bigger mazes but be warned as it can eat a lot of memory and CPU.
 
 Here is an example of a bigger one (it is a bit hard to show since it is 4k x 4k pixel):
-![monster](images/perfect4k_solved.png)
+![monster](docs/images/perfect4k_solved.png)
