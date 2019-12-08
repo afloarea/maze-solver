@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public final class ImageContainer {
+public class ImageContainer {
     private static final Float[] color = { 0f, 1f, 0f };
 
     private final FImage image;
