@@ -2,7 +2,7 @@ package com.github.afloarea.maze_solver;
 
 
 import com.github.afloarea.maze_solver.algorithms.ShortestPathAlgorithm;
-import com.github.afloarea.maze_solver.algorithms.impl.Dijkstra;
+import com.github.afloarea.maze_solver.algorithms.impl.ShortestPathDijkstra;
 import com.github.afloarea.maze_solver.convertors.BidirectionalConverter;
 import com.github.afloarea.maze_solver.convertors.util.DefaultBidirectionalConverter;
 import com.github.afloarea.maze_solver.data.Graph;
@@ -30,7 +30,7 @@ public class Main {
                 logActionAndGetResult(() -> ImageContainer.fromFile(file.toPath()), "Read file in ");
 
         final BidirectionalConverter converter = new DefaultBidirectionalConverter(container);
-        final ShortestPathAlgorithm algorithm = new Dijkstra();
+        final ShortestPathAlgorithm algorithm = new ShortestPathDijkstra();
 
         final Graph graph = logActionAndGetResult(converter::extractGraphFromImage, "Extracted graph in ");
 
@@ -46,7 +46,7 @@ public class Main {
     private static <T> T logActionAndGetResult(Supplier<? extends T> supplier, String messagePrefix) {
         final long ref = System.currentTimeMillis();
         final T result = supplier.get();
-        LOGGER.info(messagePrefix + (System.currentTimeMillis() - ref) / 1000 + " seconds");
+        LOGGER.info(() -> messagePrefix + (System.currentTimeMillis() - ref) / 1000 + " seconds");
 
         return result;
     }

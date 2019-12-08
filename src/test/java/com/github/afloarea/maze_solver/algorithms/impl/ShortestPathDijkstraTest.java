@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class DijkstraTest {
+class ShortestPathDijkstraTest {
 
     @Test
     void testSimpleGraph() {
@@ -25,7 +25,7 @@ class DijkstraTest {
 
         final Graph graph =  new Graph(root, fifth);
 
-        final List<GraphNode> result = new Dijkstra().calculateShortestPath(graph);
+        final List<GraphNode> result = new ShortestPathDijkstra().calculateShortestPath(graph);
         Assertions.assertEquals(4, result.size()); // 1 - 3 - 4 - 5
     }
 

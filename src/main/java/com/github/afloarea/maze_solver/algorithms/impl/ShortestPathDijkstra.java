@@ -6,7 +6,7 @@ import com.github.afloarea.maze_solver.data.GraphNode;
 
 import java.util.*;
 
-public final class Dijkstra implements ShortestPathAlgorithm {
+public final class ShortestPathDijkstra implements ShortestPathAlgorithm {
     private final Set<GraphNode> visited = new HashSet<>();
     private final Queue<Element> queue = new PriorityQueue<>();
 

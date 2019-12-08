@@ -8,18 +8,16 @@ import org.mockito.Mockito;
 
 class DefaultBidirectionalConverterTest {
 
-    private static final float[][] sampleData =
-            {
-                    {0f, 0f, 0f, 1f, 0f},
-                    {0f, 0f, 1f, 1f, 0f},
-                    {0f, 0f, 1f, 0f, 0f},
-                    {0f, 1f, 1f, 0f, 0f},
-                    {0f, 1f, 0f, 0f, 0f}
-            };
-
     @Test
     void testSimpleGraphExtraction() {
         // setup
+        final float[][] sampleData = {
+                { 0f, 0f, 0f, 1f, 0f },
+                { 0f, 0f, 1f, 1f, 0f },
+                { 0f, 0f, 1f, 0f, 0f },
+                { 0f, 1f, 1f, 0f, 0f },
+                { 0f, 1f, 0f, 0f, 0f }
+        };
         final ImageContainer container = Mockito.mock(ImageContainer.class);
         Mockito.when(container.getPixelMatrix()).thenReturn(sampleData);
         final DefaultBidirectionalConverter converter = new DefaultBidirectionalConverter(container);
