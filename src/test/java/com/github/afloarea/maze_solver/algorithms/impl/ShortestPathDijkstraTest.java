@@ -11,11 +11,6 @@ class DijkstraTest {
 
     @Test
     void testSimpleGraph() {
-        final List<GraphNode> result = new Dijkstra().calculateShortestPath(createSimpleGraph());
-        Assertions.assertEquals(4, result.size()); // 1 - 3 - 4 - 5
-    }
-
-    private static Graph createSimpleGraph() {
         final GraphNode root = new GraphNode(1);
         final GraphNode second = new GraphNode(2);
         final GraphNode third = new GraphNode(3);
@@ -28,7 +23,10 @@ class DijkstraTest {
         GraphNode.createNeighbours(second, fifth, 4);
         GraphNode.createNeighbours(fourth, fifth, 1);
 
-        return new Graph(root, fifth);
+        final Graph graph =  new Graph(root, fifth);
+
+        final List<GraphNode> result = new Dijkstra().calculateShortestPath(graph);
+        Assertions.assertEquals(4, result.size()); // 1 - 3 - 4 - 5
     }
 
 }

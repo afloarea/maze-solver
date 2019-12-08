@@ -10,23 +10,6 @@ public final class Dijkstra implements ShortestPathAlgorithm {
     private final Set<GraphNode> visited = new HashSet<>();
     private final Queue<Element> queue = new PriorityQueue<>();
 
-    private static class Element implements Comparable<Element> {
-        private GraphNode node;
-        private Element previousElement;
-        private int cost;
-
-        private Element(GraphNode node, Element previousElement, int cost) {
-            this.node = node;
-            this.previousElement = previousElement;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(Element that) {
-            return this.cost - that.cost;
-        }
-    }
-
     @Override
     public List<GraphNode> calculateShortestPath(Graph graph) {
         final Element firstElement = new Element(graph.getStartNode(), null, 0);
@@ -64,5 +47,35 @@ public final class Dijkstra implements ShortestPathAlgorithm {
             element = element.previousElement;
         }
         return result;
+    }
+
+    private static final class Element implements Comparable<Element> {
+        private GraphNode node;
+        private Element previousElement;
+        private int cost;
+
+        private Element(GraphNode node, Element previousElement, int cost) {
+            this.node = node;
+            this.previousElement = previousElement;
+            this.cost = cost;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Element)) return false;
+            final Element element = (Element) o;
+            return cost == element.cost;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(cost);
+        }
+
+        @Override
+        public int compareTo(Element that) {
+            return this.cost - that.cost;
+        }
     }
 }
