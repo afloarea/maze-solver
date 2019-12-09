@@ -1,7 +1,7 @@
 package com.github.afloarea.maze_solver.convertors;
 
-import com.github.afloarea.maze_solver.data.Graph;
-import com.github.afloarea.maze_solver.data.GraphNode;
+import com.github.afloarea.maze_solver.algorithms.model.Graph;
+import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
 
 import java.util.List;
 

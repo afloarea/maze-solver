@@ -1,4 +1,4 @@
-package com.github.afloarea.maze_solver.data;
+package com.github.afloarea.maze_solver.algorithms.model;
 
 public final class Graph {
 

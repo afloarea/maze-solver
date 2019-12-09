@@ -1,8 +1,8 @@
 package com.github.afloarea.maze_solver.algorithms.impl;
 
 import com.github.afloarea.maze_solver.algorithms.ShortestPathAlgorithm;
-import com.github.afloarea.maze_solver.data.Graph;
-import com.github.afloarea.maze_solver.data.GraphNode;
+import com.github.afloarea.maze_solver.algorithms.model.Graph;
+import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
 
 import java.util.*;
 

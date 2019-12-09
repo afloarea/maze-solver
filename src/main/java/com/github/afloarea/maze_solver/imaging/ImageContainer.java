@@ -1,51 +1,69 @@
 package com.github.afloarea.maze_solver.imaging;
 
-import org.openimaj.image.FImage;
-import org.openimaj.image.ImageUtilities;
-import org.openimaj.image.MBFImage;
-import org.openimaj.math.geometry.point.Point2d;
-
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.nio.file.StandardOpenOption;
+import java.util.Deque;
 
 public class ImageContainer {
-    private static final Float[] color = { 0f, 1f, 0f };
 
-    private final FImage image;
-    private MBFImage outputImage = null;
+    private final BufferedImage image;
 
-    public static ImageContainer fromFile(Path path) {
-        final FImage image;
-        try {
-            image = ImageUtilities.readF(path.toFile());
-            return new ImageContainer(image);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
+    public static ImageContainer fromFile(Path path) throws IOException {
+
+        final BufferedImage readImage;
+        try(final InputStream in = Files.newInputStream(path, StandardOpenOption.READ)) {
+            readImage = ImageIO.read(in);
         }
+        final BufferedImage image = new BufferedImage(
+                readImage.getWidth(), readImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        image.getGraphics().drawImage(readImage, 0, 0, null);
+
+        return new ImageContainer(image);
     }
 
-    private ImageContainer(FImage image) {
+    private ImageContainer(BufferedImage image) {
         this.image = image;
     }
 
-    public float[][] getPixelMatrix() {return image.pixels;}
+    public float[][] getPixelMatrix() {
+        final float[][] matrix = new float[image.getHeight()][image.getWidth()];
 
-    public void drawLines(List<Point2d> points) {
-        outputImage = image.toRGB();
-        IntStream.range(1, points.size())
-                .forEach(index -> {
-                    final Point2d firstPoint = points.get(index - 1);
-                    final Point2d secondPoint = points.get(index);
-                    outputImage.drawLine(firstPoint, secondPoint, color);
-                });
-        final Point2d lastPoint = points.get(points.size() - 1);
-        outputImage.setPixel((int)lastPoint.getX(), (int)lastPoint.getY(), color);
+        for (int row = 0; row < image.getHeight(); row++) {
+            for (int column = 0; column < image.getWidth(); column++) {
+                final int pixel = image.getRGB(column, row) & 0xFF;
+                matrix[row][column] = pixel == 0 ? 0 : 1;
+            }
+        }
+
+        return matrix;
     }
 
-    public void writeToFile(Path path) throws IOException{
-        if (outputImage != null) ImageUtilities.write(outputImage, path.toFile());
-        else ImageUtilities.write(image, path.toFile());
+    public void drawLines(Deque<IntPoint> points) {
+        final IntPoint last = points.getLast();
+        image.setRGB(last.getX(), last.getY(), Color.GREEN.getRGB());
+
+        final Graphics graphics = image.getGraphics();
+        graphics.setColor(Color.GREEN);
+
+        for (IntPoint first = points.remove(), second = points.remove();
+             !points.isEmpty();
+             first = second, second = points.remove()) {
+
+            graphics.drawLine(first.getX(), first.getY(), second.getX(), second.getY());
+        }
     }
+
+    public void writeToFile(Path path) throws IOException {
+        try(OutputStream out = Files.newOutputStream(path, StandardOpenOption.CREATE)) {
+            ImageIO.write(this.image, "png", out);
+        }
+    }
+
 }

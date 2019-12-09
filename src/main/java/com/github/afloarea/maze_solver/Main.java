@@ -3,23 +3,23 @@ package com.github.afloarea.maze_solver;
 
 import com.github.afloarea.maze_solver.algorithms.ShortestPathAlgorithm;
 import com.github.afloarea.maze_solver.algorithms.impl.ShortestPathDijkstra;
+import com.github.afloarea.maze_solver.algorithms.model.Graph;
+import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
 import com.github.afloarea.maze_solver.convertors.BidirectionalConverter;
 import com.github.afloarea.maze_solver.convertors.util.DefaultBidirectionalConverter;
-import com.github.afloarea.maze_solver.data.Graph;
-import com.github.afloarea.maze_solver.data.GraphNode;
 import com.github.afloarea.maze_solver.imaging.ImageContainer;
 
 import javax.swing.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         final JFileChooser chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
         chooser.showOpenDialog(null);
         final File file = chooser.getSelectedFile();
@@ -43,9 +43,9 @@ public class Main {
         JOptionPane.showMessageDialog(null, "Processing file " + fileName + " done!");
     }
 
-    private static <T> T logActionAndGetResult(Supplier<? extends T> supplier, String messagePrefix) {
+    private static <T> T logActionAndGetResult(Callable<? extends T> supplier, String messagePrefix) throws Exception {
         final long ref = System.currentTimeMillis();
-        final T result = supplier.get();
+        final T result = supplier.call();
         LOGGER.info(() -> messagePrefix + (System.currentTimeMillis() - ref) / 1000 + " seconds");
 
         return result;

@@ -1,7 +1,7 @@
 package com.github.afloarea.maze_solver.convertors.util.unidirectional;
 
-import com.github.afloarea.maze_solver.data.GraphNode;
-import org.openimaj.image.pixel.Pixel;
+import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
+import com.github.afloarea.maze_solver.imaging.IntPoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ public final class MatrixToGraphConverter {
     private static final int BLOCKED_TILE = 0;
     private static final int MARKED_TILE = -1;
 
-    private final Map<Pixel, GraphNode> coordinates = new HashMap<>();
+    private final Map<IntPoint, GraphNode> coordinates = new HashMap<>();
 
     private final float[][] data;
     private final int startingId;
@@ -24,7 +24,7 @@ public final class MatrixToGraphConverter {
         this.startingId = startingId;
     }
 
-    public Map<Pixel, GraphNode> getCoordinates() {
+    public Map<IntPoint, GraphNode> getCoordinates() {
 
         int id = startingId;
 
@@ -36,7 +36,7 @@ public final class MatrixToGraphConverter {
             if (data[0][j] == FREE_TILE) {
                 markTile(0, j);
                 firstNode = new GraphNode(startingId);
-                coordinates.put(new Pixel(j, 0), firstNode);
+                coordinates.put(new IntPoint(j, 0), firstNode);
                 break;
             }
         }
@@ -49,7 +49,7 @@ public final class MatrixToGraphConverter {
 
                     markTile(i, j);
                     final GraphNode node = new GraphNode(++id);
-                    coordinates.put(new Pixel(j, i), node);
+                    coordinates.put(new IntPoint(j, i), node);
 
                     lookForNeighbourToTheLeft(i, j, node);
                     lookForNeighbourUp(i, j, node);
@@ -61,13 +61,13 @@ public final class MatrixToGraphConverter {
         for (int j = 1; j <= lastColumn; j++) {
             if (data[lastRow][j] == FREE_TILE) {
                 lastNode = new GraphNode(++id);
-                coordinates.put(new Pixel(j, lastColumn), lastNode);
+                coordinates.put(new IntPoint(j, lastColumn), lastNode);
                 lookForNeighbourUp(lastRow, j, lastNode);
                 break;
             }
         }
 
-        coordinates.keySet().forEach(pixel -> clearMark(pixel.y, pixel.x));
+        coordinates.keySet().forEach(pixel -> clearMark(pixel.getY(), pixel.getX()));
 
         return coordinates;
 
@@ -78,7 +78,7 @@ public final class MatrixToGraphConverter {
         while (data[--i][column] != BLOCKED_TILE) {
             distance++;
             if (data[i][column] == MARKED_TILE) {
-                final GraphNode neighbour = coordinates.get(new Pixel(column, i));
+                final GraphNode neighbour = coordinates.get(new IntPoint(column, i));
                 GraphNode.createNeighbours(node, neighbour, distance);
                 break;
             }
@@ -90,7 +90,7 @@ public final class MatrixToGraphConverter {
         while (data[row][--j] != BLOCKED_TILE) {
             distance++;
             if (data[row][j] == MARKED_TILE) {
-                final GraphNode neighbour = coordinates.get(new Pixel(j, row));
+                final GraphNode neighbour = coordinates.get(new IntPoint(j, row));
                 GraphNode.createNeighbours(node, neighbour, distance);
                 break;
             }

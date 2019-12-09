@@ -1,6 +1,6 @@
 package com.github.afloarea.maze_solver.convertors.util;
 
-import com.github.afloarea.maze_solver.data.Graph;
+import com.github.afloarea.maze_solver.algorithms.model.Graph;
 import com.github.afloarea.maze_solver.imaging.ImageContainer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

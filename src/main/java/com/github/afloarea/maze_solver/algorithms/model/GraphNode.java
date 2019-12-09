@@ -1,4 +1,4 @@
-package com.github.afloarea.maze_solver.data;
+package com.github.afloarea.maze_solver.algorithms.model;
 
 import java.util.HashMap;
 import java.util.Map;

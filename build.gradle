@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.2.2.RELEASE'
 }
 
 group 'com.github.afloarea'
@@ -18,25 +17,16 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.2.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
-
-    implementation (group: 'org.openimaj', name: 'core-image', version: '1.3.6') {
-        exclude group: 'jgrapht', module: 'jgrapht'
-        exclude group: 'net.sf.jafama', module: 'JaFaMa'
-        exclude group: 'net.sourceforge.jmatio', module: 'jmatio'
-        exclude group: 'org.openimaj', module: 'MatrixLib'
-        exclude group: 'vigna.dsi.unimi.it', module: 'jal'
-        exclude group: 'com.sun.media', module: 'jai-codec'
-        exclude group: 'uk.ac.ed.ph.snuggletex', module: 'snuggletex-core'
-        exclude group: 'uk.ac.ed.ph.snuggletex', module: 'snuggletex-jeuclid'
-        exclude group: 'uk.ac.ed.ph.snuggletex', module: 'snuggletex-upconversion'
-        exclude group: 'com.flickr4java', module: 'flickr4java'
-    }
 }
 
 test {
     useJUnitPlatform()
 }
 
-bootJar {
-    mainClassName = 'com.github.afloarea.maze_solver.Main'
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.github.afloarea.maze_solver.Main'
+        )
+    }
 }
