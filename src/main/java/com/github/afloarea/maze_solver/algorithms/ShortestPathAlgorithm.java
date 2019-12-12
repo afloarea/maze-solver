@@ -1,9 +1,6 @@
 package com.github.afloarea.maze_solver.algorithms;
 
-import com.github.afloarea.maze_solver.algorithms.model.Graph;
-import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
-
-import java.util.List;
+import java.util.Queue;
 
 /**
  * General algorithm interface for finding the shortest path in a graph.
@@ -12,9 +9,10 @@ public interface ShortestPathAlgorithm {
 
     /**
      * Find the shortest path in a graph.
-     * @param graph the graph
+     * @param startNode the starting node of the resulting path
+     * @param endNode the final node in the resulting path
      * @return the shortest path
      */
-    List<GraphNode> calculateShortestPath(Graph graph);
+    <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode);
 
 }

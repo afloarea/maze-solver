@@ -1,32 +1,35 @@
 package com.github.afloarea.maze_solver.algorithms.impl;
 
 import com.github.afloarea.maze_solver.algorithms.ShortestPathAlgorithm;
-import com.github.afloarea.maze_solver.algorithms.model.Graph;
-import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
+import com.github.afloarea.maze_solver.algorithms.GraphNode;
 
 import java.util.*;
 
+/**
+ * Dijkstra implementation of the shortest path algorithm.
+ */
 public final class ShortestPathDijkstra implements ShortestPathAlgorithm {
-    private final Set<GraphNode> visited = new HashSet<>();
-    private final Queue<Element> queue = new PriorityQueue<>();
 
     @Override
-    public List<GraphNode> calculateShortestPath(Graph graph) {
-        final Element firstElement = new Element(graph.getStartNode(), null, 0);
+    public <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode) {
+        final Set<T> visited = new HashSet<>();
+        final Queue<Element<T>> queue = new PriorityQueue<>();
+
+        final Element<T> firstElement = new Element<>(startNode, null, 0);
         visited.add(firstElement.node);
 
         firstElement.node.getNeighbourDistances().forEach((neighbour, distance) ->
-                queue.offer(new Element(neighbour, firstElement, distance)));
+                queue.offer(new Element<>(neighbour, firstElement, distance)));
 
-        Element lastElement = firstElement;
-        while (!queue.isEmpty() && !graph.getEndNode().equals(lastElement.node)) {
-            final Element element = queue.poll();
+        Element<T> lastElement = firstElement;
+        while (!queue.isEmpty() && !endNode.equals(lastElement.node)) {
+            final Element<T> element = queue.poll();
             if (visited.contains(element.node)) continue;
 
             visited.add(element.node);
             element.node.getNeighbourDistances().forEach((neighbour, distance) -> {
                 final int cost = element.cost + distance;
-                queue.offer(new Element(neighbour, element, cost));
+                queue.offer(new Element<>(neighbour, element, cost));
             });
 
             lastElement = element;
@@ -37,10 +40,10 @@ public final class ShortestPathDijkstra implements ShortestPathAlgorithm {
         return getResult(lastElement);
     }
 
-    private static List<GraphNode> getResult(Element lastElement) {
-        final LinkedList<GraphNode> result = new LinkedList<>();
+    private static <T extends GraphNode<T>> Queue<T> getResult(Element<T> lastElement) {
+        final ArrayDeque<T> result = new ArrayDeque<>();
         result.add(lastElement.node);
-        Element element = lastElement;
+        Element<T> element = lastElement;
 
         while (element.previousElement != null) {
             result.addFirst(element.previousElement.node);
@@ -49,12 +52,12 @@ public final class ShortestPathDijkstra implements ShortestPathAlgorithm {
         return result;
     }
 
-    private static final class Element implements Comparable<Element> {
-        private GraphNode node;
-        private Element previousElement;
+    private static final class Element<T extends GraphNode<T>> implements Comparable<Element<T>> {
+        private T node;
+        private Element<T> previousElement;
         private int cost;
 
-        private Element(GraphNode node, Element previousElement, int cost) {
+        private Element(T node, Element<T> previousElement, int cost) {
             this.node = node;
             this.previousElement = previousElement;
             this.cost = cost;
@@ -64,7 +67,7 @@ public final class ShortestPathDijkstra implements ShortestPathAlgorithm {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof Element)) return false;
-            final Element element = (Element) o;
+            final Element<?> element = (Element<?>) o;
             return cost == element.cost;
         }
 

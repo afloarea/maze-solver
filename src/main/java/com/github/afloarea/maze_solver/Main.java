@@ -3,52 +3,111 @@ package com.github.afloarea.maze_solver;
 
 import com.github.afloarea.maze_solver.algorithms.ShortestPathAlgorithm;
 import com.github.afloarea.maze_solver.algorithms.impl.ShortestPathDijkstra;
-import com.github.afloarea.maze_solver.algorithms.model.Graph;
-import com.github.afloarea.maze_solver.algorithms.model.GraphNode;
-import com.github.afloarea.maze_solver.convertors.BidirectionalConverter;
-import com.github.afloarea.maze_solver.convertors.util.DefaultBidirectionalConverter;
-import com.github.afloarea.maze_solver.imaging.ImageContainer;
+import com.github.afloarea.maze_solver.convertors.MazeToGraphConverter;
+import com.github.afloarea.maze_solver.convertors.impl.PositionalGraphExtractor;
+import com.github.afloarea.maze_solver.graph.PositionalGraph;
+import com.github.afloarea.maze_solver.graph.PositionalGraphNode;
+import com.github.afloarea.maze_solver.maze.ImageMaze;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.Queue;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+/**
+ * Main class.
+ */
 public class Main {
+    static {
+        System.setProperty("java.util.logging.config.file",
+                Main.class.getResource("/logging.properties").getFile());
+    }
+
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    public static void main(String[] args) throws Exception {
+    private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
+    private static final ShortestPathAlgorithm PATH_ALGORITHM = new ShortestPathDijkstra();
+
+    public static void main(String[] args) {
+        final Path filePath = getFilePath();
+
+        if (filePath == null) {
+            LOGGER.info("No file selected. Exiting...");
+            return;
+        }
+
+        final ImageMaze maze = readMaze(filePath);
+        if (maze == null) {
+            return;
+        }
+
+        LOGGER.info("Converting image to graph...");
+        final PositionalGraph graph = timeActionAndGetResult(() -> CONVERTER.convert(maze),
+                "Conversion done in %d seconds");
+
+
+        LOGGER.info("Calculating shortest path...");
+        final Queue<PositionalGraphNode> route = timeActionAndGetResult(
+                () -> PATH_ALGORITHM.calculateShortestPath(graph.getStartNode(), graph.getEndNode()),
+                "Search finished in %d seconds");
+
+
+        LOGGER.info("Drawing route on maze...");
+        updateMaze(maze, route);
+
+
+        LOGGER.info("Writing to file...");
+        try {
+            maze.writeToFile(filePath.resolveSibling("solved_" + filePath.getFileName().toString()));
+        } catch (IOException e) {
+            LOGGER.severe(() -> "Failed to write maze to file because: " + e.getMessage());
+        }
+
+
+        JOptionPane.showMessageDialog(null, "Processing file " + filePath.getFileName() + " done!");
+    }
+
+    private static <T> T timeActionAndGetResult(Supplier<? extends T> supplier, String format){
+        final long ref = System.currentTimeMillis();
+
+        final T result = supplier.get();
+
+        LOGGER.info(() -> String.format(format, (System.currentTimeMillis() - ref) / 1000));
+        return result;
+    }
+
+    private static Path getFilePath() {
         final JFileChooser chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
         chooser.showOpenDialog(null);
         final File file = chooser.getSelectedFile();
-        if (file == null) System.exit(0);
-        final String fileName = file.getName();
 
-        final ImageContainer container =
-                logActionAndGetResult(() -> ImageContainer.fromFile(file.toPath()), "Read file in ");
+        if (file == null) {
+            return null;
+        }
 
-        final BidirectionalConverter converter = new DefaultBidirectionalConverter(container);
-        final ShortestPathAlgorithm algorithm = new ShortestPathDijkstra();
-
-        final Graph graph = logActionAndGetResult(converter::extractGraphFromImage, "Extracted graph in ");
-
-        final List<GraphNode> route = logActionAndGetResult(
-                () -> algorithm.calculateShortestPath(graph), " Calculated shortest path in ");
-
-        converter.updateImage(route);
-        container.writeToFile(Paths.get(file.getParent(), fileName.split("\\.")[0] + "_solved.png"));
-
-        JOptionPane.showMessageDialog(null, "Processing file " + fileName + " done!");
+        return file.toPath();
     }
 
-    private static <T> T logActionAndGetResult(Callable<? extends T> supplier, String messagePrefix) throws Exception {
-        final long ref = System.currentTimeMillis();
-        final T result = supplier.call();
-        LOGGER.info(() -> messagePrefix + (System.currentTimeMillis() - ref) / 1000 + " seconds");
+    private static ImageMaze readMaze(Path path) {
+        final ImageMaze maze;
+        try {
+            maze = ImageMaze.fromFile(path);
+        } catch (IOException ex) {
+            LOGGER.severe(() -> String.format("Unable to read file %s because of %s", path.getFileName(), ex.getMessage()));
+            return null;
+        }
+        return maze;
+    }
 
-        return result;
+    private static void updateMaze(ImageMaze maze, Queue<PositionalGraphNode> route) {
+        final long ref = System.currentTimeMillis();
+        maze.drawRoute(route);
+
+        LOGGER.info(() -> String.format("Drawing finished in %d seconds", (System.currentTimeMillis() - ref) / 1000));
     }
 
 }
