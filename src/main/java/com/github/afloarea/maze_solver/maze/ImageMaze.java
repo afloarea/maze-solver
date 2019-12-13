@@ -47,7 +47,7 @@ public final class ImageMaze implements Maze {
     }
 
     public void drawRoute(Queue<? extends Positional> points) {
-        final Graphics graphics = image.getGraphics();
+        final Graphics graphics = image.createGraphics();
         graphics.setColor(Color.GREEN);
 
         for (Positional first = points.remove(), second = points.remove();
@@ -56,8 +56,7 @@ public final class ImageMaze implements Maze {
 
             graphics.drawLine(first.getX(), first.getY(), second.getX(), second.getY());
         }
-
-        // graphics.dispose() ?
+         graphics.dispose();
 
         final Positional last = points.remove();
         image.setRGB(last.getX(), last.getY(), Color.GREEN.getRGB());
