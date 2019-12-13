@@ -49,9 +49,6 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
     }
 
     private void lookForNeighbourUp(Maze maze, PositionalGraphNode[][] table, int row, int column) {
-        if (row == 0) {
-            return;
-        }
         final PositionalGraphNode node = table[row][column];
         int distance = 0;
         int currentRow = row;
@@ -80,10 +77,6 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
     }
 
     private boolean isTunnelOrSurrounded(Maze maze, int row, int column) {
-        if (row == 0 || row == maze.height() - 1) {
-            return false;
-        }
-
         boolean isTunnel = checkTunnel(maze, row, column);
         if(isTunnel) return true;
 

@@ -16,7 +16,6 @@ import java.util.Queue;
  * and white signifies a free tile.
  */
 public final class ImageMaze implements Maze {
-    private static final int BLOCKED = Color.BLACK.getRGB();
     private static final int FREE = Color.WHITE.getRGB();
 
     private final BufferedImage image;
@@ -67,12 +66,15 @@ public final class ImageMaze implements Maze {
 
     @Override
     public boolean isFreeAt(int row, int column) {
+        if (row < 0 || row >= image.getHeight() || column < 0 || column >= image.getWidth()) {
+            return false;
+        }
         return rgbArray[row * image.getWidth() + column] == FREE;
     }
 
     @Override
     public boolean isBlockedAt(int row, int column) {
-        return rgbArray[row * image.getWidth() + column] == BLOCKED;
+        return !isFreeAt(row, column);
     }
 
     @Override

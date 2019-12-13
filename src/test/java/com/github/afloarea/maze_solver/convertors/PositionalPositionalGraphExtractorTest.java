@@ -44,11 +44,14 @@ class PositionalPositionalGraphExtractorTest {
 
         @Override
         public boolean isFreeAt(int row, int column) {
-            return data[row][column] == FREE;
+            return !isBlockedAt(row, column);
         }
 
         @Override
         public boolean isBlockedAt(int row, int column) {
+            if (row < 0 || row >= data.length || column < 0 || column >= data[0].length) {
+                return true;
+            }
             return data[row][column] == BLOCKED;
         }
 
