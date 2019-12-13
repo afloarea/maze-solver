@@ -30,7 +30,10 @@ public final class ImageMaze implements Maze {
         }
         final BufferedImage image = new BufferedImage(
                 readImage.getWidth(), readImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        image.getGraphics().drawImage(readImage, 0, 0, null);
+
+        final Graphics graphics = image.createGraphics();
+        graphics.drawImage(readImage, 0, 0, null);
+        graphics.dispose();
 
         return new ImageMaze(image);
     }

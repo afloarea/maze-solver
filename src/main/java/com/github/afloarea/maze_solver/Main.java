@@ -57,7 +57,7 @@ public class Main {
 
 
         LOGGER.info("Drawing route on maze...");
-        updateMaze(maze, route);
+        maze.drawRoute(route);
 
 
         LOGGER.info("Writing to file...");
@@ -101,13 +101,6 @@ public class Main {
             return null;
         }
         return maze;
-    }
-
-    private static void updateMaze(ImageMaze maze, Queue<PositionalGraphNode> route) {
-        final long ref = System.currentTimeMillis();
-        maze.drawRoute(route);
-
-        LOGGER.info(() -> String.format("Drawing finished in %d seconds", (System.currentTimeMillis() - ref) / 1000));
     }
 
 }
