@@ -21,8 +21,10 @@ The only dependency is [JUnit](https://junit.org/junit5/) ([Eclipse Public Licen
 __NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
 
 A file chooser will be launched upon executing the jar file, either directly or via java -jar <jar-file>, prompting you to select one of the mazes.
+
 Upon selecting the maze, the shortest path will be searched and after that a file will be written in the same directory as the original file 
-with the name solved_<original-file-name>.
+with the name solved_\<original-file-name\>.
+
 At the moment only PNG format is supported.
 
 Some sample data:
@@ -39,7 +41,7 @@ Some sample data:
 
 ![original](docs/images/original_normal.png) ![solved](docs/images/solved_normal.png)
 
-Here is an example of a bigger one (it is a bit hard to show since it is 4k x 4k pixels):
+Here is an example of a bigger one (4k x 4k pixels):
 ![monster](docs/images/solved_perfect4k.png)
 
 And an even bigger one (10k x 10k):
