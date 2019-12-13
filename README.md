@@ -2,38 +2,47 @@
 
 Java implementation of the Solving Maze algorithm presented by Computerphile.
 
-The basic idea is that there is a free tile at the top, on the first row, 
-which is the starting point and there is also one at the bottom, which is the destination, 
-and you have to reach the destination from the starting point.
+The main idea is that there is maze represented by a binary image.
+The image contains white pixels which represent free tiles and black pixels which represent impassable / blocked tiles.
+There is a single free tile on the top row, which represents the starting point.
+There is also a single free tile on the last row, which represents the destination / maze exit.
+The goal is to find the shortest path from the starting point to the maze exit.
 
 This project is inspired by the [maze solving algorithm from Computerphile](https://www.youtube.com/watch?v=rop0W4QDOUI).
-It is a Dijkstra implementation.
+There is a [dedicated repository](https://github.com/mikepound/mazesolving) for this. The original implementation is in Python.
+I have also used the [same mazes](https://github.com/mikepound/mazesolving/tree/master/examples).
+
+At this point in time, the only supported algorithm is Dijkstra.
 
 **Dependencies**
 
-- [OpenImaj](http://openimaj.org/) ([BSD](http://openimaj.org/license.html))
-- [JUnit](https://junit.org/junit5/) ([Eclipse Public License](https://github.com/junit-team/junit5/blob/master/LICENSE.md))
-- [Mockito](https://site.mockito.org/) ([MIT](https://github.com/mockito/mockito/wiki/License))
+The only dependency is [JUnit](https://junit.org/junit5/) ([Eclipse Public License](https://github.com/junit-team/junit5/blob/master/LICENSE.md)).
 
-__IMPORTANT NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
+__NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
 
-Check out the mazes folder. The output file will be in the same folder as the input file.
+A file chooser will be launched upon executing the jar file, either directly or via java -jar <jar-file>, prompting you to select one of the mazes.
+Upon selecting the maze, the shortest path will be searched and after that a file will be written in the same directory as the original file 
+with the name solved_<original-file-name>.
+At the moment only PNG format is supported.
 
 Some sample data:
 
 - tiny.png
 
-![original](docs/images/tiny_original.png) ![solved](docs/images/tiny_solved.png)
+![original](docs/images/original_tiny.png) ![solved](docs/images/solved_tiny.png)
 
 - small.png
 
-![original](docs/images/small_original.png) ![solved](docs/images/small_solved.png)
+![original](docs/images/original_small.png) ![solved](docs/images/solved_small.png)
 
 - normal.png
 
-![original](docs/images/normal_original.png) ![solved](docs/images/normal_solved.png)
-
-You can try your luck with the bigger mazes but be warned as it can eat a lot of memory and CPU.
+![original](docs/images/original_normal.png) ![solved](docs/images/solved_normal.png)
 
 Here is an example of a bigger one (it is a bit hard to show since it is 4k x 4k pixels):
-![monster](docs/images/perfect4k_solved.png)
+![monster](docs/images/solved_perfect4k.png)
+
+And an even bigger one (10k x 10k):
+![nemesis](docs/images/solved_perfect10k.png)
+
+You can find multiple solved mazes in the docs directory.
