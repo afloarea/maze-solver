@@ -10,12 +10,13 @@ import com.github.afloarea.maze_solver.graph.PositionalGraphNode;
 import com.github.afloarea.maze_solver.maze.ImageMaze;
 
 import javax.swing.*;
-import java.io.File;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Queue;
 import java.util.function.Supplier;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -23,8 +24,7 @@ import java.util.logging.Logger;
  */
 public class Main {
     static {
-        System.setProperty("java.util.logging.config.file",
-                Main.class.getResource("/logging.properties").getFile());
+        configureLogging();
     }
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -82,14 +82,14 @@ public class Main {
 
     private static Path getFilePath() {
         final JFileChooser chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
-        chooser.showOpenDialog(null);
-        final File file = chooser.getSelectedFile();
+        chooser.setFileFilter(new FileNameExtensionFilter("PNG files", "png"));
+        final int result = chooser.showOpenDialog(null);
 
-        if (file == null) {
+        if (JFileChooser.APPROVE_OPTION != result) {
             return null;
         }
 
-        return file.toPath();
+        return chooser.getSelectedFile().toPath();
     }
 
     private static ImageMaze readMaze(Path path) {
@@ -97,10 +97,18 @@ public class Main {
         try {
             maze = ImageMaze.fromFile(path);
         } catch (IOException ex) {
-            LOGGER.severe(() -> String.format("Unable to read file %s because of %s", path.getFileName(), ex.getMessage()));
+            LOGGER.severe(() -> String.format("Unable to read file %s", ex.getMessage()));
             return null;
         }
         return maze;
+    }
+
+    private static void configureLogging() {
+        try {
+            LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("/logging.properties"));
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not read logging configuration", e);
+        }
     }
 
 }
