@@ -1,8 +1,9 @@
 package com.github.afloarea.maze_solver;
 
 
-import com.github.afloarea.maze_solver.algorithms.ShortestPathAlgorithm;
-import com.github.afloarea.maze_solver.algorithms.impl.ShortestPathDijkstra;
+import com.github.afloarea.maze_solver.algorithms.PathSearch;
+import com.github.afloarea.maze_solver.algorithms.PathSearchAlgorithm;
+import com.github.afloarea.maze_solver.algorithms.impl.PathSearchImpl;
 import com.github.afloarea.maze_solver.convertors.MazeToGraphConverter;
 import com.github.afloarea.maze_solver.convertors.impl.PositionalGraphExtractor;
 import com.github.afloarea.maze_solver.graph.PositionalGraph;
@@ -30,7 +31,7 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
-    private static final ShortestPathAlgorithm PATH_ALGORITHM = new ShortestPathDijkstra();
+    private static final PathSearchAlgorithm PATH_ALGORITHM = new PathSearchImpl(PathSearch.DIJKSTRA);
 
     public static void main(String[] args) {
         final Path filePath = getFilePath();

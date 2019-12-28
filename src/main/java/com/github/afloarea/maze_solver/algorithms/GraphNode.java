@@ -12,6 +12,10 @@ public interface GraphNode<N extends GraphNode<N>> {
 
     void addNeighbour(N neighbour, int distance);
 
+    default int getHeuristicTo(N node) {
+        return 0;
+    }
+
     static <T extends GraphNode<T>> void createNeighbours(T firstNode, T secondNode, int distance) {
         firstNode.addNeighbour(secondNode, distance);
         secondNode.addNeighbour(firstNode, distance);

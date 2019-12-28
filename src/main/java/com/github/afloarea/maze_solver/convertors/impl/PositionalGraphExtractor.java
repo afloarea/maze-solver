@@ -8,8 +8,10 @@ import com.github.afloarea.maze_solver.maze.Maze;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.logging.Logger;
 
 public final class PositionalGraphExtractor implements MazeToGraphConverter {
+    private static final Logger LOGGER = Logger.getLogger(PositionalGraphExtractor.class.getName());
 
     @Override
     public PositionalGraph convert(Maze maze) {
@@ -26,6 +28,7 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
             }
         }
 
+        LOGGER.info(() -> String.format("Extracted %d graph nodes", graph.size()));
         return new PositionalGraph(graph.getFirst(), graph.getLast());
 
     }

@@ -33,6 +33,11 @@ public final class PositionalGraphNode implements Positional, GraphNode<Position
     }
 
     @Override
+    public int getHeuristicTo(PositionalGraphNode that) {
+        return Math.abs(this.getX() - that.getX()) + Math.abs(this.getY() - that.getY()); // Manhattan distance
+    }
+
+    @Override
     public void addNeighbour(PositionalGraphNode neighbour, int distance) {
         neighbourDistances.put(neighbour, distance);
     }

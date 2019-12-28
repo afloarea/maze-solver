@@ -1,6 +1,7 @@
 package com.github.afloarea.maze_solver.algorithms.impl;
 
 import com.github.afloarea.maze_solver.algorithms.GraphNode;
+import com.github.afloarea.maze_solver.algorithms.PathSearch;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ class ShortestPathDijkstraTest {
         GraphNode.createNeighbours(fourth, fifth, 1);
 
         // execute
-        final Queue<TestNode> result = new ShortestPathDijkstra().calculateShortestPath(root, fifth);
+        final Queue<TestNode> result = new PathSearchImpl(PathSearch.DIJKSTRA).calculateShortestPath(root, fifth);
 
         // evaluate
         Assertions.assertEquals(4, result.size()); // 1 - 3 - 4 - 5
