@@ -2,25 +2,19 @@ package com.github.afloarea.maze_solver.algorithms.impl;
 
 import com.github.afloarea.maze_solver.algorithms.GraphNode;
 import com.github.afloarea.maze_solver.algorithms.groups.NodeGroup;
-import com.github.afloarea.maze_solver.algorithms.PathSearch;
-import com.github.afloarea.maze_solver.algorithms.PathSearchAlgorithm;
+import com.github.afloarea.maze_solver.algorithms.PathSearchStrategy;
+import com.github.afloarea.maze_solver.algorithms.PathFinder;
 
 import java.util.*;
 import java.util.logging.Logger;
 
-public final class PathSearchImpl implements PathSearchAlgorithm {
-    private static final Logger LOGGER = Logger.getLogger(PathSearchImpl.class.getName());
-
-    private PathSearch algorithm;
-
-    public PathSearchImpl(PathSearch algorithm) {
-        this.algorithm = algorithm;
-    }
+public final class DefaultPathFinder implements PathFinder {
+    private static final Logger LOGGER = Logger.getLogger(DefaultPathFinder.class.getName());
 
     @Override
-    public <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode) {
+    public <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy) {
         final Set<T> visited = new HashSet<>();
-        final NodeGroup<T> group = NodeGroup.create(algorithm, startNode, endNode);
+        final NodeGroup<T> group = NodeGroup.create(searchStrategy, startNode, endNode);
 
         int expandedNodes = 0;
         Element<T> lastElement = group.getNext();
@@ -57,13 +51,5 @@ public final class PathSearchImpl implements PathSearchAlgorithm {
             element = element.getPreviousElement();
         }
         return result;
-    }
-
-    public PathSearch getAlgorithm() {
-        return algorithm;
-    }
-
-    public void setAlgorithm(PathSearch algorithm) {
-        this.algorithm = algorithm;
     }
 }

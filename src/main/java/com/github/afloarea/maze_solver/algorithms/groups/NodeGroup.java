@@ -1,7 +1,7 @@
 package com.github.afloarea.maze_solver.algorithms.groups;
 
 import com.github.afloarea.maze_solver.algorithms.GraphNode;
-import com.github.afloarea.maze_solver.algorithms.PathSearch;
+import com.github.afloarea.maze_solver.algorithms.PathSearchStrategy;
 import com.github.afloarea.maze_solver.algorithms.impl.Element;
 import com.github.afloarea.maze_solver.algorithms.groups.impl.HeuristicNodeGroup;
 import com.github.afloarea.maze_solver.algorithms.groups.impl.QueuedNodeGroup;
@@ -20,7 +20,7 @@ public interface NodeGroup<T extends GraphNode<T>> {
 
     void clear();
 
-    static <N extends GraphNode<N>> NodeGroup<N> create(PathSearch algorithm, N startNode, N endNode) {
+    static <N extends GraphNode<N>> NodeGroup<N> create(PathSearchStrategy algorithm, N startNode, N endNode) {
         switch (algorithm) {
             case BFS: return new QueuedNodeGroup<>(startNode);
             case DFS: return new StackedNodeGroup<>(startNode);

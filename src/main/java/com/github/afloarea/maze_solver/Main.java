@@ -1,9 +1,9 @@
 package com.github.afloarea.maze_solver;
 
 
-import com.github.afloarea.maze_solver.algorithms.PathSearch;
-import com.github.afloarea.maze_solver.algorithms.PathSearchAlgorithm;
-import com.github.afloarea.maze_solver.algorithms.impl.PathSearchImpl;
+import com.github.afloarea.maze_solver.algorithms.PathFinder;
+import com.github.afloarea.maze_solver.algorithms.PathSearchStrategy;
+import com.github.afloarea.maze_solver.algorithms.impl.DefaultPathFinder;
 import com.github.afloarea.maze_solver.convertors.MazeToGraphConverter;
 import com.github.afloarea.maze_solver.convertors.impl.PositionalGraphExtractor;
 import com.github.afloarea.maze_solver.graph.PositionalGraph;
@@ -31,7 +31,7 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
-    private static final PathSearchAlgorithm PATH_ALGORITHM = new PathSearchImpl(PathSearch.DIJKSTRA);
+    private static final PathFinder PATH_FINDER = new DefaultPathFinder();
 
     public static void main(String[] args) {
         final Path filePath = getFilePath();
@@ -52,8 +52,8 @@ public class Main {
 
 
         LOGGER.info("Calculating shortest path...");
-        final Queue<PositionalGraphNode> route = timeActionAndGetResult(
-                () -> PATH_ALGORITHM.calculateShortestPath(graph.getStartNode(), graph.getEndNode()),
+        final Queue<PositionalGraphNode> route = timeActionAndGetResult(() -> PATH_FINDER.calculateShortestPath(
+                graph.getStartNode(), graph.getEndNode(), PathSearchStrategy.DIJKSTRA),
                 "Search finished in %d seconds");
 
 
@@ -72,7 +72,7 @@ public class Main {
         JOptionPane.showMessageDialog(null, "Processing file " + filePath.getFileName() + " done!");
     }
 
-    private static <T> T timeActionAndGetResult(Supplier<? extends T> supplier, String format){
+    private static <T> T timeActionAndGetResult(Supplier<? extends T> supplier, String format) {
         final long ref = System.currentTimeMillis();
 
         final T result = supplier.get();

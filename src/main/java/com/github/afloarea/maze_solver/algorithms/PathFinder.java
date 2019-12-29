@@ -5,7 +5,7 @@ import java.util.Queue;
 /**
  * General algorithm interface for finding the shortest path in a graph.
  */
-public interface PathSearchAlgorithm {
+public interface PathFinder {
 
     /**
      * Find the shortest path in a graph.
@@ -13,6 +13,6 @@ public interface PathSearchAlgorithm {
      * @param endNode the final node in the resulting path
      * @return the shortest path
      */
-    <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode);
+    <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy);
 
 }
