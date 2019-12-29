@@ -8,11 +8,14 @@ import com.github.afloarea.maze_solver.algorithms.PathFinder;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * Implementation for the Path Finder capable of using any of the available algorithms using specific node groups.
+ */
 public final class DefaultPathFinder implements PathFinder {
     private static final Logger LOGGER = Logger.getLogger(DefaultPathFinder.class.getName());
 
     @Override
-    public <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy) {
+    public <T extends GraphNode<T>> Queue<T> findShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy) {
         final Set<T> visited = new HashSet<>();
         final NodeGroup<T> group = NodeGroup.create(searchStrategy, startNode, endNode);
 

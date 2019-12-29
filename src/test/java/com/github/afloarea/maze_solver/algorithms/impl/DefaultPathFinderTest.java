@@ -1,6 +1,7 @@
 package com.github.afloarea.maze_solver.algorithms.impl;
 
 import com.github.afloarea.maze_solver.algorithms.GraphNode;
+import com.github.afloarea.maze_solver.algorithms.PathFinder;
 import com.github.afloarea.maze_solver.algorithms.PathSearchStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 
-class ShortestPathDijkstraTest {
+class DefaultPathFinderTest {
+
+    private static final PathFinder PATH_FINDER = new DefaultPathFinder();
 
     @Test
     void testSimpleGraph() {
@@ -29,7 +32,7 @@ class ShortestPathDijkstraTest {
         GraphNode.createNeighbours(fourth, fifth, 1);
 
         // execute
-        final Queue<TestNode> result = new DefaultPathFinder().calculateShortestPath(root, fifth, PathSearchStrategy.DIJKSTRA);
+        final Queue<TestNode> result = PATH_FINDER.findShortestPath(root, fifth, PathSearchStrategy.DIJKSTRA);
 
         // evaluate
         Assertions.assertEquals(4, result.size()); // 1 - 3 - 4 - 5

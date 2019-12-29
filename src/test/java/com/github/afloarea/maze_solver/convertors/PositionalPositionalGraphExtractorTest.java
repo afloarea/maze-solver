@@ -33,7 +33,6 @@ class PositionalPositionalGraphExtractorTest {
     }
 
     private static final class StubMaze implements Maze {
-        private static final int FREE = 1;
         private static final int BLOCKED = 0;
 
         private final int[][] data;

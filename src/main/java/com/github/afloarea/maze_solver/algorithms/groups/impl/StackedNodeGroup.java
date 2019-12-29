@@ -7,6 +7,12 @@ import com.github.afloarea.maze_solver.algorithms.impl.Element;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * Node group for the depth first search algorithm.
+ * Uses a stack.
+ *
+ * @param <T> the type of the graph node.
+ */
 public final class StackedNodeGroup<T extends GraphNode<T>> extends AbstractNodeGroup<T, Deque<Element<T>>> {
 
     public StackedNodeGroup(T startNode) {

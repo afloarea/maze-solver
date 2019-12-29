@@ -9,10 +9,11 @@ public interface PathFinder {
 
     /**
      * Find the shortest path in a graph.
+     *
      * @param startNode the starting node of the resulting path
-     * @param endNode the final node in the resulting path
+     * @param endNode   the final node in the resulting path
      * @return the shortest path
      */
-    <T extends GraphNode<T>> Queue<T> calculateShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy);
+    <T extends GraphNode<T>> Queue<T> findShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy);
 
 }

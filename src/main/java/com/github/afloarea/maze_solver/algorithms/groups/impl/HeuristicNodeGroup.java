@@ -7,6 +7,12 @@ import com.github.afloarea.maze_solver.algorithms.impl.Element;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * Node group for A* algorithm.
+ * Uses a priority queue and also takes into account the heuristic.
+ *
+ * @param <T> the type of the graph node. Also makes use of the {@link GraphNode#getHeuristicTo(GraphNode endNode)} method.
+ */
 public final class HeuristicNodeGroup<T extends GraphNode<T>> extends AbstractNodeGroup<T, Queue<Element<T>>> {
     private final T endNode;
 

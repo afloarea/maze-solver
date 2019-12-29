@@ -52,7 +52,7 @@ public class Main {
 
 
         LOGGER.info("Calculating shortest path...");
-        final Queue<PositionalGraphNode> route = timeActionAndGetResult(() -> PATH_FINDER.calculateShortestPath(
+        final Queue<PositionalGraphNode> route = timeActionAndGetResult(() -> PATH_FINDER.findShortestPath(
                 graph.getStartNode(), graph.getEndNode(), PathSearchStrategy.DIJKSTRA),
                 "Search finished in %d seconds");
 

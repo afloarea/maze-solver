@@ -4,6 +4,12 @@ import com.github.afloarea.maze_solver.algorithms.GraphNode;
 
 import java.util.Objects;
 
+/**
+ * Class used for wrapping a graph node.
+ * Used by the path finding algorithms.
+ *
+ * @param <T> the type of the graph node
+ */
 public final class Element<T extends GraphNode<T>> implements Comparable<Element<T>> {
 
     private T node;
