@@ -46,7 +46,7 @@ public final class Element<T extends GraphNode<T>> implements Comparable<Element
 
     @Override
     public int compareTo(Element<T> that) {
-        return (this.cost + heuristic) - (that.cost + that.heuristic);
+        return (this.cost + this.heuristic) - (that.cost + that.heuristic);
     }
 
     public T getNode() {

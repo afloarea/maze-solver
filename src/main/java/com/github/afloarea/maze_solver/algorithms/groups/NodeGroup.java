@@ -68,9 +68,9 @@ public interface NodeGroup<T extends GraphNode<T>> {
             case DFS:
                 return new StackedNodeGroup<>(startNode);
             case A_STAR:
-                return new PrioritizedNodeGroup<>(startNode);
-            case DIJKSTRA:
                 return new HeuristicNodeGroup<>(startNode, endNode);
+            case DIJKSTRA:
+                return new PrioritizedNodeGroup<>(startNode);
         }
 
         throw new IllegalStateException("No suitable algorithm found");
