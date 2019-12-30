@@ -2,6 +2,17 @@
 
 Java implementation of the Solving Maze algorithm presented by Computerphile.
 
+## Usage
+
+You can check out the releases page to download an executable Jar. You need [Java 8](https://adoptopenjdk.net) installed in order to run the jar.
+With Java 8 installed you can run the jar file:
+
+```shell script
+
+$java -jar maze-solver-{version}.jar
+
+```
+
 The main idea is that there is maze represented by a binary image.
 The image contains white pixels which represent free tiles and black pixels which represent impassable / blocked tiles.
 There is a single free tile on the top row, which represents the starting point.

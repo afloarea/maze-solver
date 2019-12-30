@@ -37,7 +37,7 @@ public final class DefaultPathFinder implements PathFinder {
         }
 
         final int totalExpandedNodes = expandedNodes;
-        LOGGER.info(() -> String.format("number of expanded nodes: %d", totalExpandedNodes));
+        LOGGER.info(() -> String.format("%s: number of expanded nodes: %d", searchStrategy, totalExpandedNodes));
 
         group.clear();
         visited.clear();
