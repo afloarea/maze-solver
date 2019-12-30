@@ -2,9 +2,9 @@
 
 Java implementation of the Solving Maze algorithm presented by Computerphile.
 
-## Usage
+### Usage
 
-You can check out the releases page to download an executable Jar. You need [Java 8](https://adoptopenjdk.net) installed in order to run the jar.
+You can check out the releases page to download an executable Jar. [Java 8](https://adoptopenjdk.net) needs to beinstalled.
 With Java 8 installed you can run the jar file:
 
 ```shell script
@@ -12,6 +12,8 @@ With Java 8 installed you can run the jar file:
 $java -jar maze-solver-{version}.jar
 
 ```
+
+### Details
 
 The main idea is that there is maze represented by a binary image.
 The image contains white pixels which represent free tiles and black pixels which represent impassable / blocked tiles.
@@ -23,15 +25,37 @@ This project is inspired by the [maze solving algorithm from Computerphile](http
 There is a [dedicated repository](https://github.com/mikepound/mazesolving) for this. The original implementation is in Python.
 I have also used the [same mazes](https://github.com/mikepound/mazesolving/tree/master/examples).
 
-At this point in time, the only supported algorithm is Dijkstra.
+### Supported algorithms
 
-**Dependencies**
+The currently supported algorithms are:
+- Dijkstra (default)
+- A*
+- Breadth-First-Search (BFS)
+- Depth-First-Search (DFS)
+
+The algorithm / strategy can be specified when running the jar:
+
+```shell script
+
+$java -jar maze-solver-{version}.jar -s ${strategy}
+
+```
+
+Where strategy can be one of the following:
+- dijkstra
+- a-star
+- bfs
+- dfs
+
+### Dependencies
 
 The only dependency is [JUnit](https://junit.org/junit5/) ([Eclipse Public License](https://github.com/junit-team/junit5/blob/master/LICENSE.md)).
 
+### Examples and notes
+
 __NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
 
-A file chooser will be launched upon executing the jar file, either directly or via java -jar <jar-file>, prompting you to select one of the mazes.
+A file chooser will be launched upon executing the jar file, either directly or via java -jar <jar-file>, prompting you to select one of the mazes, unless the file path is already specified using the -mp option.
 
 Upon selecting the maze, the shortest path will be searched and after that a file will be written in the same directory as the original file 
 with the name solved_\<original-file-name\>.
