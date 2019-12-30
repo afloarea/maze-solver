@@ -13,9 +13,11 @@ import com.github.afloarea.maze_solver.maze.ImageMaze;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Queue;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -33,8 +35,31 @@ public class Main {
     private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
     private static final PathFinder PATH_FINDER = new DefaultPathFinder();
 
+    private static final Map<String, PathSearchStrategy> STRATEGY_MAP;
+    static {
+        final Map<String, PathSearchStrategy> pathStrategyByName = new HashMap<>();
+        pathStrategyByName.put("dijkstra", PathSearchStrategy.DIJKSTRA);
+        pathStrategyByName.put("a-star", PathSearchStrategy.A_STAR);
+        pathStrategyByName.put("bfs", PathSearchStrategy.BFS);
+        pathStrategyByName.put("dfs", PathSearchStrategy.DFS);
+
+        STRATEGY_MAP = Collections.unmodifiableMap(pathStrategyByName);
+    }
+
     public static void main(String[] args) {
-        final Path filePath = getFilePath();
+        final Arguments arguments = new Arguments(args);
+        if (arguments.isHelp()) {
+            arguments.displayHelp();
+            return;
+        }
+
+        final PathSearchStrategy strategy = STRATEGY_MAP.getOrDefault(arguments.getStrategy(), PathSearchStrategy.DIJKSTRA);
+        LOGGER.info(() -> String.format("Using %s strategy", strategy));
+
+        final Optional<Path> providedPath = arguments.getMazePath().flatMap(Main::getFilePath);
+        final boolean mazeProvided = providedPath.isPresent();
+        final Path filePath = providedPath
+                .orElseGet(Main::getFileChooserPath);
 
         if (filePath == null) {
             LOGGER.info("No file selected. Exiting...");
@@ -53,7 +78,7 @@ public class Main {
 
         LOGGER.info("Calculating shortest path...");
         final Queue<PositionalGraphNode> route = timeActionAndGetResult(() -> PATH_FINDER.findShortestPath(
-                graph.getStartNode(), graph.getEndNode(), PathSearchStrategy.DIJKSTRA),
+                graph.getStartNode(), graph.getEndNode(), strategy),
                 "Search finished in %d seconds");
 
 
@@ -68,8 +93,12 @@ public class Main {
             LOGGER.severe(() -> "Failed to write maze to file because: " + e.getMessage());
         }
 
-
-        JOptionPane.showMessageDialog(null, "Processing file " + filePath.getFileName() + " done!");
+        final String endMessage = "Processing file " + filePath.getFileName() + " done!";
+        if (mazeProvided) {
+            LOGGER.info(endMessage);
+        } else {
+            JOptionPane.showMessageDialog(null, endMessage);
+        }
     }
 
     private static <T> T timeActionAndGetResult(Supplier<? extends T> supplier, String format) {
@@ -81,7 +110,7 @@ public class Main {
         return result;
     }
 
-    private static Path getFilePath() {
+    private static Path getFileChooserPath() {
         final JFileChooser chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
         chooser.setFileFilter(new FileNameExtensionFilter("PNG files", "png"));
         final int result = chooser.showOpenDialog(null);
@@ -91,6 +120,21 @@ public class Main {
         }
 
         return chooser.getSelectedFile().toPath();
+    }
+
+    private static Optional<Path> getFilePath(String path) {
+        final Path mazePath;
+        try {
+            mazePath = Paths.get(path);
+            if (!mazePath.getFileName().toString().endsWith(".png") && Files.exists(mazePath)) {
+                throw new InvalidPathException(path, "Not an existing png file");
+            }
+        } catch (InvalidPathException e) {
+            LOGGER.severe(() -> String.format("Invalid path provided: %s", path));
+            return Optional.empty();
+        }
+
+        return Optional.of(mazePath);
     }
 
     private static ImageMaze readMaze(Path path) {

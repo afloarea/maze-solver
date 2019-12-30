@@ -32,6 +32,8 @@ class DefaultPathFinderTest {
 
         // execute
         final Deque<TestNode> result = new ArrayDeque<>(PATH_FINDER.findShortestPath(root, fourth, strategy));
+
+        // evaluate
         assertEquals(1, result.getFirst().getId());
         assertEquals(4, result.getLast().getId());
     }
