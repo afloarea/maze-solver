@@ -52,16 +52,17 @@ public final class ImageMaze implements Maze {
         final Graphics graphics = image.createGraphics();
         graphics.setColor(Color.GREEN);
 
-        for (Positional first = points.remove(), second = points.remove();
-             points.size() != 1;
+        Positional first;
+        Positional second;
+        for (first = points.remove(), second = points.remove();
+             !points.isEmpty();
              first = second, second = points.remove()) {
 
             graphics.drawLine(first.getX(), first.getY(), second.getX(), second.getY());
         }
          graphics.dispose();
 
-        final Positional last = points.remove();
-        image.setRGB(last.getX(), last.getY(), Color.GREEN.getRGB());
+        image.setRGB(second.getX(), second.getY(), Color.GREEN.getRGB());
     }
 
     @Override

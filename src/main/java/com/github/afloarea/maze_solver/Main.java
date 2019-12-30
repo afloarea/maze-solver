@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 /**
  * Main class.
  */
-public class Main {
+public final class Main {
     static {
         configureLogging();
     }

@@ -101,7 +101,7 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
 
     private static boolean checkTunnel(Maze maze, int row, int column) {
         return maze.isBlockedAt(row - 1, column) && maze.isBlockedAt(row + 1, column)
-                && maze.isFreeAt(row - 1, column) && maze.isFreeAt(row, column + 1)
+                && maze.isFreeAt(row, column - 1) && maze.isFreeAt(row, column + 1)
 
                 || maze.isFreeAt(row - 1, column) && maze.isFreeAt(row + 1, column)
                 && maze.isBlockedAt(row, column - 1) && maze.isBlockedAt(row, column + 1);
