@@ -1,15 +1,15 @@
 package com.github.afloarea.maze_solver.convertors;
 
-import com.github.afloarea.maze_solver.graph.PositionalGraph;
 import com.github.afloarea.maze_solver.convertors.impl.PositionalGraphExtractor;
+import com.github.afloarea.maze_solver.graph.PositionalGraph;
 import com.github.afloarea.maze_solver.maze.Maze;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PositionalPositionalGraphExtractorTest {
 
@@ -49,10 +49,10 @@ class PositionalPositionalGraphExtractorTest {
         final PositionalGraph graph = converter.convert(maze);
 
         // evaluate
-        Assertions.assertEquals(startNodeY, graph.getStartNode().getY());
-        Assertions.assertEquals(startNodeX, graph.getStartNode().getX());
-        Assertions.assertEquals(endNodeY, graph.getEndNode().getY());
-        Assertions.assertEquals(endNodeX, graph.getEndNode().getX());
+        assertEquals(startNodeY, graph.getStartNode().getY());
+        assertEquals(startNodeX, graph.getStartNode().getX());
+        assertEquals(endNodeY, graph.getEndNode().getY());
+        assertEquals(endNodeX, graph.getEndNode().getX());
     }
 
     private static final class StubMaze implements Maze {

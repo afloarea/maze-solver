@@ -20,10 +20,10 @@ class DefaultPathFinderTest {
     @EnumSource(PathSearchStrategy.class)
     void testFindSimplePath(PathSearchStrategy strategy) {
         // setup
-        final TestNode root = new TestNode(1);
-        final TestNode second = new TestNode(2);
-        final TestNode third = new TestNode(3);
-        final TestNode fourth = new TestNode(4);
+        final var root = new TestNode(1);
+        final var second = new TestNode(2);
+        final var third = new TestNode(3);
+        final var fourth = new TestNode(4);
 
         createNeighbours(root, second, 6);
         createNeighbours(root, third, 6);
@@ -31,7 +31,7 @@ class DefaultPathFinderTest {
         createNeighbours(third, fourth, 4);
 
         // execute
-        final Deque<TestNode> result = new ArrayDeque<>(PATH_FINDER.findShortestPath(root, fourth, strategy));
+        final var result = new ArrayDeque<>(PATH_FINDER.findShortestPath(root, fourth, strategy));
 
         // evaluate
         assertEquals(1, result.getFirst().getId());
@@ -41,10 +41,10 @@ class DefaultPathFinderTest {
     @Test
     void testAStar() {
         // setup
-        final TestNode root = new TestNode(1, 10);
-        final TestNode second = new TestNode(2, 6);
-        final TestNode third = new TestNode(3, 4);
-        final TestNode fourth = new TestNode(4, 0);
+        final var root = new TestNode(1, 10);
+        final var second = new TestNode(2, 6);
+        final var third = new TestNode(3, 4);
+        final var fourth = new TestNode(4, 0);
 
         createNeighbours(root, second, 6);
         createNeighbours(root, third, 6);
@@ -52,7 +52,7 @@ class DefaultPathFinderTest {
         createNeighbours(third, fourth, 4);
 
         // execute
-        final Queue<TestNode> result = PATH_FINDER.findShortestPath(root, fourth, PathSearchStrategy.A_STAR);
+        final var result = PATH_FINDER.findShortestPath(root, fourth, PathSearchStrategy.A_STAR);
 
         // evaluate
         assertEquals(3, result.size()); // 1 - 3 - 4
@@ -65,11 +65,11 @@ class DefaultPathFinderTest {
     void testDijkstra() {
 
         // setup
-        final TestNode root = new TestNode(1);
-        final TestNode second = new TestNode(2);
-        final TestNode third = new TestNode(3);
-        final TestNode fourth = new TestNode(4);
-        final TestNode fifth = new TestNode(5);
+        final var root = new TestNode(1);
+        final var second = new TestNode(2);
+        final var third = new TestNode(3);
+        final var fourth = new TestNode(4);
+        final var fifth = new TestNode(5);
 
         createNeighbours(root, second, 3);
         createNeighbours(root, third, 1);
@@ -78,7 +78,7 @@ class DefaultPathFinderTest {
         createNeighbours(fourth, fifth, 1);
 
         // execute
-        final Queue<TestNode> result = PATH_FINDER.findShortestPath(root, fifth, PathSearchStrategy.DIJKSTRA);
+        final var result = PATH_FINDER.findShortestPath(root, fifth, PathSearchStrategy.DIJKSTRA);
 
         // evaluate
         assertEquals(4, result.size()); // 1 - 3 - 4 - 5

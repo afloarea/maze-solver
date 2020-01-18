@@ -22,7 +22,7 @@ public final class DefaultPathFinder implements PathFinder {
         int expandedNodes = 0;
         Element<T> lastElement = group.getNext();
         while (!group.isEmpty() && !endNode.equals(lastElement.getNode())) {
-            final Element<T> element = group.remove();
+            final var element = group.remove();
             if (visited.contains(element.getNode())) continue;
 
             expandedNodes++;
@@ -45,9 +45,9 @@ public final class DefaultPathFinder implements PathFinder {
     }
 
     private static <T extends GraphNode<T>> Queue<T> getResult(Element<T> lastElement) {
-        final ArrayDeque<T> result = new ArrayDeque<>();
+        final var result = new ArrayDeque<T>();
         result.add(lastElement.getNode());
-        Element<T> element = lastElement;
+        var element = lastElement;
 
         while (element.getPreviousElement() != null) {
             result.addFirst(element.getPreviousElement().getNode());

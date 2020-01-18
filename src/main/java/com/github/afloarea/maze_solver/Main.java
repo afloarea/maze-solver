@@ -35,25 +35,20 @@ public final class Main {
     private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
     private static final PathFinder PATH_FINDER = new DefaultPathFinder();
 
-    private static final Map<String, PathSearchStrategy> STRATEGY_MAP;
-    static {
-        final Map<String, PathSearchStrategy> pathStrategyByName = new HashMap<>();
-        pathStrategyByName.put("dijkstra", PathSearchStrategy.DIJKSTRA);
-        pathStrategyByName.put("a-star", PathSearchStrategy.A_STAR);
-        pathStrategyByName.put("bfs", PathSearchStrategy.BFS);
-        pathStrategyByName.put("dfs", PathSearchStrategy.DFS);
-
-        STRATEGY_MAP = Collections.unmodifiableMap(pathStrategyByName);
-    }
+    private static final Map<String, PathSearchStrategy> STRATEGY_MAP = Map.of(
+            "dijkstra", PathSearchStrategy.DIJKSTRA,
+            "a-star", PathSearchStrategy.A_STAR,
+            "bfs", PathSearchStrategy.BFS,
+            "dfs", PathSearchStrategy.DFS);
 
     public static void main(String[] args) {
-        final Arguments arguments = new Arguments(args);
+        final var arguments = new Arguments(args);
         if (arguments.isHelp()) {
             arguments.displayHelp();
             return;
         }
 
-        final PathSearchStrategy strategy = STRATEGY_MAP.getOrDefault(arguments.getStrategy(), PathSearchStrategy.DIJKSTRA);
+        final var strategy = STRATEGY_MAP.getOrDefault(arguments.getStrategy(), PathSearchStrategy.DIJKSTRA);
         LOGGER.info(() -> String.format("Using %s strategy", strategy));
 
         final Optional<Path> providedPath = arguments.getMazePath().flatMap(Main::getFilePath);
@@ -111,7 +106,7 @@ public final class Main {
     }
 
     private static Path getFileChooserPath() {
-        final JFileChooser chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
+        final var chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
         chooser.setFileFilter(new FileNameExtensionFilter("PNG files", "png"));
         final int result = chooser.showOpenDialog(null);
 

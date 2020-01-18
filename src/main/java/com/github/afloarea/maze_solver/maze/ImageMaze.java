@@ -27,10 +27,10 @@ public final class ImageMaze implements Maze {
         try(final InputStream in = Files.newInputStream(path, StandardOpenOption.READ)) {
             readImage = ImageIO.read(in);
         }
-        final BufferedImage image = new BufferedImage(
+        final var image = new BufferedImage(
                 readImage.getWidth(), readImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-        final Graphics graphics = image.createGraphics();
+        final var graphics = image.createGraphics();
         graphics.drawImage(readImage, 0, 0, null);
         graphics.dispose();
 
@@ -49,7 +49,7 @@ public final class ImageMaze implements Maze {
     }
 
     public void drawRoute(Queue<? extends Positional> points) {
-        final Graphics graphics = image.createGraphics();
+        final var graphics = image.createGraphics();
         graphics.setColor(Color.GREEN);
 
         Positional first;
