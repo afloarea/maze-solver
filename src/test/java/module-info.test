@@ -1,0 +1,8 @@
+// flags required for compiling test classes, even though the tests are run on the classpath (because of junit modules visibility issues)
+// issue https://github.com/java9-modularity/gradle-modules-plugin/issues/129
+
+--add-modules
+  org.junit.jupiter
+
+--add-reads
+  com.github.afloarea.maze.solver=org.junit.jupiter
