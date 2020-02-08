@@ -1,5 +1,8 @@
 package com.github.afloarea.maze_solver.graph;
 
+/**
+ * A graph composed of {@code PositionalGraphNode}s.
+ */
 public final class PositionalGraph {
 
     private PositionalGraphNode startNode;

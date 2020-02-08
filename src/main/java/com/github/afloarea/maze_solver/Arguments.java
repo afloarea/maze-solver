@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class used for mapping command line arguments.
+ */
 public final class Arguments {
 
     private final List<String> args;

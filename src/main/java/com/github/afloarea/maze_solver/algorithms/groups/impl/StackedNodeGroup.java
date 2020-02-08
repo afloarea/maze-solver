@@ -9,7 +9,7 @@ import java.util.Deque;
 
 /**
  * Node group for the depth first search algorithm.
- * Uses a stack.
+ * Uses a stack. Does not take into account the cost.
  *
  * @param <T> the type of the graph node.
  */

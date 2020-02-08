@@ -32,14 +32,14 @@ public final class Main {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
-    private static final PathFinder PATH_FINDER = new DefaultPathFinder();
+    private static final MazeToGraphConverter   CONVERTER   = new PositionalGraphExtractor();
+    private static final PathFinder             PATH_FINDER = new DefaultPathFinder();
 
     private static final Map<String, PathSearchStrategy> STRATEGY_MAP = Map.of(
             "dijkstra", PathSearchStrategy.DIJKSTRA,
-            "a-star", PathSearchStrategy.A_STAR,
-            "bfs", PathSearchStrategy.BFS,
-            "dfs", PathSearchStrategy.DFS);
+            "a-star",   PathSearchStrategy.A_STAR,
+            "bfs",      PathSearchStrategy.BFS,
+            "dfs",      PathSearchStrategy.DFS);
 
     public static void main(String[] args) {
         final var arguments = new Arguments(args);
@@ -72,8 +72,8 @@ public final class Main {
 
 
         LOGGER.info("Calculating shortest path...");
-        final Queue<PositionalGraphNode> route = timeActionAndGetResult(() -> PATH_FINDER.findShortestPath(
-                graph.getStartNode(), graph.getEndNode(), strategy),
+        final Queue<PositionalGraphNode> route = timeActionAndGetResult(
+                () -> PATH_FINDER.findShortestPath(graph.getStartNode(), graph.getEndNode(), strategy),
                 "Search finished in %d seconds");
 
 
@@ -86,6 +86,7 @@ public final class Main {
             maze.writeToFile(filePath.resolveSibling("solved_" + filePath.getFileName().toString()));
         } catch (IOException e) {
             LOGGER.severe(() -> "Failed to write maze to file because: " + e.getMessage());
+            return;
         }
 
         final String endMessage = "Processing file " + filePath.getFileName() + " done!";

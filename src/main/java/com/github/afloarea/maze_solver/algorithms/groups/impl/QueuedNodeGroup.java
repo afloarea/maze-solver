@@ -9,7 +9,7 @@ import java.util.Queue;
 
 /**
  * Node group for the Breadth first search algorithm.
- * Uses a FIFO queue.
+ * Uses a FIFO queue. Does not take into account the cost.
  *
  * @param <T> the type of the graph node.
  */

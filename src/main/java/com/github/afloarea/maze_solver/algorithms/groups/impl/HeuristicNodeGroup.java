@@ -9,7 +9,7 @@ import java.util.Queue;
 
 /**
  * Node group for A* algorithm.
- * Uses a priority queue and also takes into account the heuristic.
+ * Uses a priority queue and also takes into account the heuristic, in addition to the cost.
  *
  * @param <T> the type of the graph node. Also makes use of the {@link GraphNode#getHeuristicTo(GraphNode endNode)} method.
  */

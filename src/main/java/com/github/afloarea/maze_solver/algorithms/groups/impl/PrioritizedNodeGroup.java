@@ -9,7 +9,7 @@ import java.util.Queue;
 
 /**
  * Node group for Dijkstra shortest path.
- * Uses a priority queue to sort by cost.
+ * Uses a priority queue to sort by lowest cost.
  *
  * @param <T> the type of the graph node.
  */
