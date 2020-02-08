@@ -4,12 +4,22 @@ Java implementation of the Solving Maze algorithm presented by Computerphile.
 
 ### Usage
 
-You can check out the releases page to download an executable Jar. [Java 8](https://adoptopenjdk.net) needs to beinstalled.
-With Java 8 installed you can run the jar file:
+You can check out the releases page to download binaries. [Java 11](https://adoptopenjdk.net) needs to be installed.
+With Java 11 installed, from the bin folder, you can run:
+
+- Linux & Mac
 
 ```shell script
 
-$java -jar maze-solver-{version}.jar
+$./maze-solver
+
+```
+
+- Windows
+
+```shell script
+
+bin>.\maze-solver
 
 ```
 
@@ -33,11 +43,11 @@ The currently supported algorithms are:
 - Breadth-First-Search (BFS)
 - Depth-First-Search (DFS)
 
-The algorithm / strategy can be specified when running the jar:
+The algorithm / strategy can be specified when running the application:
 
 ```shell script
 
-$java -jar maze-solver-{version}.jar -s ${strategy}
+$./maze-solver -s ${strategy}
 
 ```
 
@@ -55,7 +65,7 @@ The only dependency is [JUnit](https://junit.org/junit5/) ([Eclipse Public Licen
 
 __NOTE:__ Be careful when using bigger mazes as it will use a lot of CPU and RAM.
 
-A file chooser will be launched upon executing the jar file, either directly or via java -jar <jar-file>, prompting you to select one of the mazes, unless the file path is already specified using the -mp option.
+A file chooser will be launched upon executing the jar file, either directly or via command line, prompting you to select one of the mazes, unless the maze path is already specified using either the -mp or --maze-path options.
 
 Upon selecting the maze, the shortest path will be searched and after that a file will be written in the same directory as the original file 
 with the name solved_\<original-file-name\>.
