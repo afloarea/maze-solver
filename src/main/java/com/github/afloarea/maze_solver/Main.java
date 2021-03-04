@@ -80,9 +80,10 @@ public final class Main {
         maze.drawRoute(route);
 
 
-        LOGGER.info("Writing to file...");
+        final Path targetPath = filePath.resolveSibling("solved_" + filePath.getFileName());
+        LOGGER.info(() -> "Writing to file " + targetPath);
         try {
-            maze.writeToFile(filePath.resolveSibling("solved_" + filePath.getFileName().toString()));
+            maze.writeToFile(targetPath);
         } catch (IOException e) {
             LOGGER.severe(() -> "Failed to write maze to file because: " + e.getMessage());
             return;
@@ -133,6 +134,7 @@ public final class Main {
     }
 
     private static ImageMaze readMaze(Path path) {
+        LOGGER.info(() -> "Reading maze from file " + path);
         final ImageMaze maze;
         try {
             maze = ImageMaze.fromFile(path);

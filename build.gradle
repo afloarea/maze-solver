@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id "org.beryx.jlink" version "2.23.3"
 }
 
 group 'com.github.afloarea'
@@ -36,4 +37,11 @@ test {
 application {
     mainModule = "com.github.afloarea.maze.solver"
     mainClass = "com.github.afloarea.maze_solver.Main"
+}
+
+jlink {
+    launcher {
+        name = "maze-solver"
+    }
+    imageName = 'maze-solver'
 }
