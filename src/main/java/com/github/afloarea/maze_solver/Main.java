@@ -3,7 +3,6 @@ package com.github.afloarea.maze_solver;
 
 import com.github.afloarea.maze_solver.algorithms.PathFinder;
 import com.github.afloarea.maze_solver.algorithms.PathSearchStrategy;
-import com.github.afloarea.maze_solver.algorithms.impl.DefaultPathFinder;
 import com.github.afloarea.maze_solver.convertors.MazeToGraphConverter;
 import com.github.afloarea.maze_solver.convertors.impl.PositionalGraphExtractor;
 import com.github.afloarea.maze_solver.graph.PositionalGraph;
@@ -17,13 +16,15 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
 import java.util.function.Supplier;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * Main class.
+ * Application entrypoint.
  */
 public final class Main {
     static {
@@ -32,9 +33,7 @@ public final class Main {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    private static final MazeToGraphConverter   CONVERTER   = new PositionalGraphExtractor();
-    private static final PathFinder             PATH_FINDER = new DefaultPathFinder();
-
+    private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
     private static final Map<String, PathSearchStrategy> STRATEGY_MAP = Map.of(
             "dijkstra", PathSearchStrategy.DIJKSTRA,
             "a-star",   PathSearchStrategy.A_STAR,
@@ -70,10 +69,10 @@ public final class Main {
         final PositionalGraph graph = timeActionAndGetResult(() -> CONVERTER.convert(maze),
                 "Conversion done in %d seconds");
 
-
+        final PathFinder pathFinder = PathFinder.ofStrategy(strategy);
         LOGGER.info("Calculating shortest path...");
         final Queue<PositionalGraphNode> route = timeActionAndGetResult(
-                () -> PATH_FINDER.findShortestPath(graph.getStartNode(), graph.getEndNode(), strategy),
+                () -> pathFinder.findShortestPath(graph.getStartNode(), graph.getEndNode()),
                 "Search finished in %d seconds");
 
 

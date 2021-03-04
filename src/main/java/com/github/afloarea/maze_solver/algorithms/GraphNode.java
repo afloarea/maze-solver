@@ -9,8 +9,17 @@ import java.util.Map;
  */
 public interface GraphNode<N extends GraphNode<N>> {
 
+    /**
+     * Obtain the neighbours with the corresponding distance for each neighbour.
+     * @return the distance for each neighbour
+     */
     Map<N, Integer> getNeighbourDistances();
 
+    /**
+     * Add the neighbour node to this node. This node must be added separately to the neighbour.
+     * @param neighbour the neighbour
+     * @param distance the distance
+     */
     void addNeighbour(N neighbour, int distance);
 
     /**

@@ -14,8 +14,14 @@ import java.util.logging.Logger;
 public final class DefaultPathFinder implements PathFinder {
     private static final Logger LOGGER = Logger.getLogger(DefaultPathFinder.class.getName());
 
+    private final PathSearchStrategy searchStrategy;
+
+    public DefaultPathFinder(PathSearchStrategy searchStrategy) {
+        this.searchStrategy = searchStrategy;
+    }
+
     @Override
-    public <T extends GraphNode<T>> Queue<T> findShortestPath(T startNode, T endNode, PathSearchStrategy searchStrategy) {
+    public <T extends GraphNode<T>> Queue<T> findShortestPath(T startNode, T endNode) {
         final Set<T> visited = new HashSet<>();
         final NodeGroup<T> group = NodeGroup.create(searchStrategy, startNode, endNode);
 

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A graph node aware of it's spatial position.
+ * A graph node aware of its spatial position.
  */
 public final class PositionalGraphNode implements Positional, GraphNode<PositionalGraphNode> {
 

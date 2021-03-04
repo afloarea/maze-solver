@@ -1,11 +1,10 @@
 plugins {
     id 'java'
-    id "org.javamodularity.moduleplugin" version "1.6.0"
     id 'application'
 }
 
 group 'com.github.afloarea'
-version '0.4.0'
+version '0.4.4'
 description 'A maze-solver that can solve image mazes in png format using various algorithms'
 
 sourceCompatibility = 11
@@ -16,22 +15,25 @@ repositories {
     jcenter()
 }
 
+java {
+    modularity.inferModulePath = true
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }
 
 test {
     useJUnitPlatform()
 
-    testLogging {
-        events 'PASSED', 'FAILED', 'SKIPPED'
-    }
+    testLogging.showStandardStreams = true
 
-    moduleOptions {
-        runOnClasspath = true
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
     }
 }
 
 application {
-    mainClassName = "$moduleName/com.github.afloarea.maze_solver.Main"
+    mainModule = "com.github.afloarea.maze.solver"
+    mainClass = "com.github.afloarea.maze_solver.Main"
 }

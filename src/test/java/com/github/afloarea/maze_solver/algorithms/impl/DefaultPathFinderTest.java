@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultPathFinderTest {
 
-    private static final PathFinder PATH_FINDER = new DefaultPathFinder();
-
     @ParameterizedTest
     @EnumSource(PathSearchStrategy.class)
     void testFindSimplePath(PathSearchStrategy strategy) {
@@ -31,7 +29,7 @@ class DefaultPathFinderTest {
         createNeighbours(third, fourth, 4);
 
         // execute
-        final var result = new ArrayDeque<>(PATH_FINDER.findShortestPath(root, fourth, strategy));
+        final var result = new ArrayDeque<>(PathFinder.ofStrategy(strategy).findShortestPath(root, fourth));
 
         // evaluate
         assertEquals(1, result.getFirst().getId());
@@ -52,7 +50,7 @@ class DefaultPathFinderTest {
         createNeighbours(third, fourth, 4);
 
         // execute
-        final var result = PATH_FINDER.findShortestPath(root, fourth, PathSearchStrategy.A_STAR);
+        final var result = PathFinder.ofStrategy(PathSearchStrategy.A_STAR).findShortestPath(root, fourth);
 
         // evaluate
         assertEquals(3, result.size()); // 1 - 3 - 4
@@ -78,7 +76,7 @@ class DefaultPathFinderTest {
         createNeighbours(fourth, fifth, 1);
 
         // execute
-        final var result = PATH_FINDER.findShortestPath(root, fifth, PathSearchStrategy.DIJKSTRA);
+        final var result = PathFinder.ofStrategy(PathSearchStrategy.DIJKSTRA).findShortestPath(root, fifth);
 
         // evaluate
         assertEquals(4, result.size()); // 1 - 3 - 4 - 5
