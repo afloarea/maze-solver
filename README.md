@@ -4,8 +4,12 @@ Java implementation of the Solving Maze algorithm presented by Computerphile.
 
 ### Usage
 
-You can check out the releases page to download binaries. [Java 11](https://adoptopenjdk.net) needs to be installed.
-With Java 11 installed, from the bin folder, you can run:
+You can check out the releases page to download binaries. 
+[Java 16](https://adoptopenjdk.net) needs to be installed.
+
+_NOTE_: If you download the os/platform specific binary (`*-<platform>.zip`) you do not need Java installed on your system.
+
+From the bin folder, you can run:
 
 - Linux & Mac
 
