@@ -5,11 +5,11 @@ plugins {
 }
 
 group 'com.github.afloarea'
-version '0.4.5'
+version '0.4.6'
 description 'A maze-solver that can solve image mazes in png format using various algorithms'
 
-sourceCompatibility = 16
-targetCompatibility = 16
+sourceCompatibility = 17
+targetCompatibility = 17
 
 repositories {
     mavenCentral()

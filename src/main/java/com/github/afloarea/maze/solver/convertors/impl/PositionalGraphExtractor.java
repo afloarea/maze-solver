@@ -20,10 +20,12 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
 
         for (int row = 0; row < maze.height(); row++) {
             for (int column = 0; column < maze.width(); column++) {
+
                 final var node = processAtPosition(maze, table, row, column);
                 if (node != null) {
                     graph.add(node);
                 }
+
             }
         }
 
@@ -37,7 +39,10 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
             return null;
         }
 
-        if (isTunnelOrSurrounded(maze, row, column)) {
+        // avoid creating unnecessary intermediary nodes (tunnel nodes)
+        // nodes surrounded by free space can be eliminated as well because
+        // the maze can only be traversed with up, down, left, right moves and not diagonally
+        if (isTunnel(maze, row, column) || isSurroundedByFreeSpace(maze, row, column)) {
             return null;
         }
 
@@ -78,31 +83,30 @@ public final class PositionalGraphExtractor implements MazeToGraphConverter {
         }
     }
 
-    private boolean isTunnelOrSurrounded(Maze maze, int row, int column) {
-        boolean isTunnel = checkTunnel(maze, row, column);
-        if(isTunnel) return true;
-
-        boolean surrounded = true;
-        for (int currentRow = row - 1; currentRow <= row + 1; currentRow++) {
-            for (int currentColumn = column - 1; currentColumn <= column + 1; currentColumn++) {
-                if (maze.isBlockedAt(currentRow, currentColumn)) {
-                    surrounded = false;
-                    break;
-                }
-            }
-            if (!surrounded) {
-                break;
-            }
-        }
-
-        return surrounded;
-    }
-
-    private static boolean checkTunnel(Maze maze, int row, int column) {
+    private static boolean isTunnel(Maze maze, int row, int column) {
         return maze.isBlockedAt(row - 1, column) && maze.isBlockedAt(row + 1, column)
                 && maze.isFreeAt(row, column - 1) && maze.isFreeAt(row, column + 1)
 
                 || maze.isFreeAt(row - 1, column) && maze.isFreeAt(row + 1, column)
                 && maze.isBlockedAt(row, column - 1) && maze.isBlockedAt(row, column + 1);
+    }
+
+    private static boolean isSurroundedByFreeSpace(Maze maze, int row, int column) {
+        boolean surrounded = true;
+        for (int currentRow = row - 1; currentRow <= row + 1; currentRow++) {
+            for (int currentColumn = column - 1; currentColumn <= column + 1; currentColumn++) {
+
+                if (maze.isBlockedAt(currentRow, currentColumn)) {
+                    surrounded = false;
+                    break;
+                }
+
+            }
+
+            if (!surrounded) {
+                break;
+            }
+        }
+        return surrounded;
     }
 }

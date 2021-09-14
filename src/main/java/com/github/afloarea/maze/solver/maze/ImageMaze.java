@@ -24,7 +24,7 @@ public final class ImageMaze implements Maze {
     public static ImageMaze fromFile(Path path) throws IOException {
 
         final BufferedImage readImage;
-        try(final InputStream in = Files.newInputStream(path, StandardOpenOption.READ)) {
+        try(var in = Files.newInputStream(path, StandardOpenOption.READ)) {
             readImage = ImageIO.read(in);
         }
         final var image = new BufferedImage(
@@ -71,11 +71,6 @@ public final class ImageMaze implements Maze {
             return false;
         }
         return rgbArray[row * image.getWidth() + column] == FREE;
-    }
-
-    @Override
-    public boolean isBlockedAt(int row, int column) {
-        return !isFreeAt(row, column);
     }
 
     @Override

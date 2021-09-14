@@ -31,7 +31,7 @@ public final class Main {
         configureLogging();
     }
 
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     private static final MazeToGraphConverter CONVERTER = new PositionalGraphExtractor();
     private static final Map<String, PathSearchStrategy> STRATEGY_MAP = Map.of(
@@ -48,53 +48,61 @@ public final class Main {
         }
 
         final var strategy = STRATEGY_MAP.getOrDefault(arguments.getStrategy(), PathSearchStrategy.DIJKSTRA);
-        LOGGER.info(() -> String.format("Using %s strategy", strategy));
+        LOG.info(() -> String.format("Using %s strategy", strategy));
 
-        final Optional<Path> providedPath = arguments.getMazePath().flatMap(Main::getFilePath);
-        final boolean mazeProvided = providedPath.isPresent();
-        final Path filePath = providedPath
-                .orElseGet(Main::getFileChooserPath);
+        final boolean mazeProvided = arguments.getMazePath().isPresent();
+        final Optional<Path> optionalPath = mazeProvided ? getFilePath(arguments.getMazePath().get()) : getFileChooserPath();
+        final Optional<ImageMaze> optionalMaze = optionalPath.flatMap(mazePath -> process(mazePath, strategy));
 
-        if (filePath == null) {
-            LOGGER.info("No file selected. Exiting...");
+        if (optionalMaze.isEmpty()) {
             return;
         }
 
-        final ImageMaze maze = readMaze(filePath);
+        writeToFileAndNotify(optionalPath.get(), optionalMaze.get(), !mazeProvided);
+    }
+
+    private static Optional<ImageMaze> process(Path mazePath, PathSearchStrategy strategy) {
+        final ImageMaze maze = readMaze(mazePath);
         if (maze == null) {
-            return;
+            return Optional.empty();
         }
 
-        LOGGER.info("Converting image to graph...");
+        LOG.info("Converting image to graph...");
         final PositionalGraph graph = timeActionAndGetResult(() -> CONVERTER.convert(maze),
                 "Conversion done in %d seconds");
 
         final PathFinder pathFinder = PathFinder.ofStrategy(strategy);
-        LOGGER.info("Calculating shortest path...");
+        LOG.info("Calculating shortest path...");
         final Queue<PositionalGraphNode> route = timeActionAndGetResult(
                 () -> pathFinder.findShortestPath(graph.startNode(), graph.endNode()),
                 "Search finished in %d seconds");
 
 
-        LOGGER.info("Drawing route on maze...");
+        LOG.info("Drawing route on maze...");
         maze.drawRoute(route);
 
+        return Optional.of(maze);
+    }
 
-        final Path targetPath = filePath.resolveSibling("solved_" + filePath.getFileName());
-        LOGGER.info(() -> "Writing to file " + targetPath);
+    private static void writeToFileAndNotify(Path original, ImageMaze maze, boolean displayDialog) {
+        final Path targetPath = original.resolveSibling("solved_" + original.getFileName());
+        LOG.info(() -> "Writing to file " + targetPath);
         try {
             maze.writeToFile(targetPath);
         } catch (IOException e) {
-            LOGGER.severe(() -> "Failed to write maze to file because: " + e.getMessage());
+            LOG.severe(() -> "Failed to write maze to file because: " + e.getMessage());
             return;
         }
 
-        final String endMessage = "Processing file " + filePath.getFileName() + " done!";
-        if (mazeProvided) {
-            LOGGER.info(endMessage);
-        } else {
+        notifyDone(original, displayDialog);
+    }
+
+    private static void notifyDone(Path originalPath, boolean displayDialog) {
+        final String endMessage = "Processing file " + originalPath.getFileName() + " done!";
+        if (displayDialog) {
             JOptionPane.showMessageDialog(null, endMessage);
         }
+        LOG.info(endMessage);
     }
 
     private static <T> T timeActionAndGetResult(Supplier<? extends T> supplier, String format) {
@@ -102,31 +110,32 @@ public final class Main {
 
         final T result = supplier.get();
 
-        LOGGER.info(() -> String.format(format, (System.currentTimeMillis() - ref) / 1000));
+        LOG.info(() -> String.format(format, (System.currentTimeMillis() - ref) / 1_000));
         return result;
     }
 
-    private static Path getFileChooserPath() {
+    private static Optional<Path> getFileChooserPath() {
         final var chooser = new JFileChooser(Paths.get(".").toAbsolutePath().toFile());
         chooser.setFileFilter(new FileNameExtensionFilter("PNG files", "png"));
         final int result = chooser.showOpenDialog(null);
 
         if (JFileChooser.APPROVE_OPTION != result) {
-            return null;
+            LOG.info("No file selected");
+            return Optional.empty();
         }
 
-        return chooser.getSelectedFile().toPath();
+        return Optional.of(chooser.getSelectedFile().toPath());
     }
 
     private static Optional<Path> getFilePath(String path) {
         final Path mazePath;
         try {
             mazePath = Paths.get(path);
-            if (!mazePath.getFileName().toString().endsWith(".png") && Files.exists(mazePath)) {
+            if (!mazePath.getFileName().toString().endsWith(".png") || !Files.exists(mazePath)) {
                 throw new InvalidPathException(path, "Not an existing png file");
             }
         } catch (InvalidPathException e) {
-            LOGGER.severe(() -> String.format("Invalid path provided: %s", path));
+            LOG.severe(() -> String.format("Invalid path provided: %s", path));
             return Optional.empty();
         }
 
@@ -134,12 +143,12 @@ public final class Main {
     }
 
     private static ImageMaze readMaze(Path path) {
-        LOGGER.info(() -> "Reading maze from file " + path);
+        LOG.info(() -> "Reading maze from file " + path);
         final ImageMaze maze;
         try {
             maze = ImageMaze.fromFile(path);
         } catch (IOException ex) {
-            LOGGER.severe(() -> String.format("Unable to read file %s", ex.getMessage()));
+            LOG.severe(() -> String.format("Unable to read file %s", ex.getMessage()));
             return null;
         }
         return maze;

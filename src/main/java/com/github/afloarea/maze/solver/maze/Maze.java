@@ -21,7 +21,9 @@ public interface Maze {
      * @param column the column
      * @return whether the position is blocked or not.
      */
-    boolean isBlockedAt(int row, int column);
+    default boolean isBlockedAt(int row, int column) {
+        return !isFreeAt(row, column);
+    }
 
     int width();
 

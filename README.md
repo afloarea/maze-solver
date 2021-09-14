@@ -5,7 +5,7 @@ Java implementation of the Solving Maze algorithm presented by Computerphile.
 ### Usage
 
 You can check out the releases page to download binaries. 
-[Java 16](https://adoptopenjdk.net) needs to be installed.
+[Java 17](https://jdk.java.net/17/) needs to be installed.
 
 _NOTE_: If you download the os/platform specific binary (`*-<platform>.zip`) you do not need Java installed on your system.
 

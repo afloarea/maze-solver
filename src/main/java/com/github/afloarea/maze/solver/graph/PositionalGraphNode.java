@@ -6,6 +6,7 @@ import com.github.afloarea.maze.solver.maze.Positional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * A graph node aware of its spatial position.
@@ -34,7 +35,8 @@ public final class PositionalGraphNode implements Positional, GraphNode<Position
 
     @Override
     public int getHeuristicTo(PositionalGraphNode that) {
-        return Math.abs(this.getX() - that.getX()) + Math.abs(this.getY() - that.getY()); // Manhattan distance
+        // Manhattan distance is used because the maze cannot be traversed diagonally
+        return Math.abs(this.getX() - that.getX()) + Math.abs(this.getY() - that.getY());
     }
 
     @Override
@@ -59,5 +61,14 @@ public final class PositionalGraphNode implements Positional, GraphNode<Position
     @Override
     public int hashCode() {
         return Objects.hash(row, column);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PositionalGraphNode.class.getSimpleName() + "[", "]")
+                .add("row=" + row)
+                .add("column=" + column)
+                .add("neighbourDistances=" + neighbourDistances)
+                .toString();
     }
 }

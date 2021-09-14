@@ -1,7 +1,6 @@
 package com.github.afloarea.maze.solver.algorithms.groups.impl;
 
 import com.github.afloarea.maze.solver.algorithms.GraphNode;
-import com.github.afloarea.maze.solver.algorithms.groups.AbstractNodeGroup;
 import com.github.afloarea.maze.solver.algorithms.impl.Element;
 
 import java.util.ArrayDeque;

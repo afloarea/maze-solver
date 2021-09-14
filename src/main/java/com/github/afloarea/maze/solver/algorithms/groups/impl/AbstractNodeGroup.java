@@ -1,6 +1,7 @@
-package com.github.afloarea.maze.solver.algorithms.groups;
+package com.github.afloarea.maze.solver.algorithms.groups.impl;
 
 import com.github.afloarea.maze.solver.algorithms.GraphNode;
+import com.github.afloarea.maze.solver.algorithms.groups.NodeGroup;
 import com.github.afloarea.maze.solver.algorithms.impl.Element;
 
 import java.util.Queue;
@@ -11,7 +12,8 @@ import java.util.Queue;
  * @param <T> the type of the node.
  * @param <S> the type of the data structure.
  */
-public abstract class AbstractNodeGroup<T extends GraphNode<T>, S extends Queue<Element<T>>> implements NodeGroup<T> {
+public abstract sealed class AbstractNodeGroup<T extends GraphNode<T>, S extends Queue<Element<T>>> implements NodeGroup<T>
+        permits HeuristicNodeGroup, PrioritizedNodeGroup, QueuedNodeGroup, StackedNodeGroup {
 
     protected final S structure;
 
